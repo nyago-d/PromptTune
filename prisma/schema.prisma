@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model UserSession {
+  id    Int     @id @default(autoincrement())
+  systemPrompt String
+  userPrompt String
+  answer String @default("")
+  generations Generation[]
+}
+
+model Generation {
+  id    Int     @id @default(autoincrement())
+  promptResults PromptResult[]
+  userSession UserSession @relation(fields: [userSessionId], references: [id], onDelete: Cascade)
+  userSessionId Int
+  additionalPrompt String?
+}
+
+model PromptResult {
+  id    Int     @id @default(autoincrement())
+  promptOrder Int
+  prompt String
+  answer String
+  generation Generation @relation(fields: [generationId], references: [id], onDelete: Cascade)
+  generationId Int
+}

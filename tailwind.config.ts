@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { iconsPlugin, getIconCollections } from "@egoist/tailwindcss-icons";
 
 export default {
   content: ["./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}"],
@@ -18,5 +19,9 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    iconsPlugin({
+      collections: getIconCollections(["material-symbols","mingcute"]),
+    }),
+  ],
 } satisfies Config;
