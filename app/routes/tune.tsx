@@ -3,7 +3,7 @@ import { type ActionFunctionArgs, type LoaderFunctionArgs, type MetaFunction } f
 import { redirect, useSubmit } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { typedjson, useTypedLoaderData } from "remix-typedjson";
-import { load, GenerationWithPrompts, createFirstGeneration, createNextGeneration, createSession } from "~/services/service";
+import { loadSession, GenerationWithPrompts, makeFirstGeneration, makeNextGeneration, createSession } from "~/services/service";
 
 export const meta: MetaFunction = () => {
   return [
@@ -25,12 +25,12 @@ export async function action({ request } : ActionFunctionArgs) {
     console.dir(token, { depth: null });
     return redirect(`/tune/${id}/`);
   } else if (!generationJson) {
-    const { token } = await createFirstGeneration(id);
+    const { token } = await makeFirstGeneration(id);
     console.dir(token, { depth: null });
     return redirect(`/tune/${id}/`);
   } else {
     const generation = JSON.parse(generationJson) as GenerationWithPrompts;
-    const { token } = await createNextGeneration(id, generation);
+    const { token } = await makeNextGeneration(id, generation);
     console.dir(token, { depth: null });
     return redirect(`/tune/${id}/`);
   }
@@ -50,8 +50,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
 
-  const id = Number(params.id);
-  const userSession = await load(id);
+  const userSession = await loadSession(Number(params.id));
 
   return typedjson({ 
     userSession 
@@ -80,7 +79,7 @@ export default function Index() {
     }
   }, [userSession]);
 
-  const handleInitialAnswer = async () => {
+  const handleInitialAnswer = () => {
     setLoading(true);
     submit({ 
       initialPrompt,
@@ -90,7 +89,7 @@ export default function Index() {
     });
   };
 
-  const handleFirstGeneration = async () => {
+  const handleFirstGeneration = () => {
     setLoading(true);
     submit({ 
       id: userSession!.id
