@@ -1,8 +1,9 @@
-import { Generation, PromptResult } from "@prisma/client";
+import { Generation, PromptResult, UserSession } from "@prisma/client";
 import { createFirstGeneration, createNextGeneration, CreateSession, getAnswers, getFirstPrompts, getNextPrompts, readSession } from "./data";
 
+export type UserSessionWithGenerations = UserSession & { generations: GenerationWithPrompts[] };
 export type GenerationWithPrompts = Generation & { promptResults: PromptResult[] };
-export type Answer = { prompt: string, answer: string, token: number };
+export type Answer = { prompt: string, answer: string };
 
 export async function createSession(systemPrompt: string, userQuery: string) {
 

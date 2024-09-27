@@ -196,7 +196,7 @@ export async function getAnswers(systemPrompts: string[], userPrompt: string) {
     const answers = results.map((result, i) => ({
         prompt: systemPrompts[i],
         answer: result.choices[0]!.message.content!
-    } as Answer));
+    } as const satisfies Answer));
 
     return {
         token: results.reduce((acc, result) => acc + (result.usage?.total_tokens || 0), 0),
