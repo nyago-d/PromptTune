@@ -39,7 +39,7 @@ export function InitialBlock({
 
     return (
         <div className="bg-white rounded-lg shadow-lg p-8 my-5">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Prompt Tuning</h1>
+          <h1 className="text-2xl font-bold text-gray-700 mb-4">Prompt Tuning</h1>
           <div className="mb-4">
             <label htmlFor="initialPrompt" className="block text-gray-700 mb-2">Initial Prompt</label>
             <textarea
@@ -68,7 +68,7 @@ export function InitialBlock({
           </div>
           <div className={"flex justify-between" + (sesstionCreated ? ' hidden' : '')}>
             {loading ? (
-              <span className="i-mingcute-loading-fill animate-spin text-2xl w-full"></span>
+              <span className="i-line-md-loading-loop text-2xl w-full"></span>
             ) : (
               <button
                 className={"bg-blue-600 text-white px-4 py-2 rounded-md" + (!!initialPrompt && !!userQuery ? '' : ' opacity-50 cursor-not-allowed')}
@@ -85,7 +85,7 @@ export function InitialBlock({
           </div>
           <div className={"flex justify-between" + (!sesstionCreated ? ' hidden' : '')}>
             {loading ? (
-              <span className="i-mingcute-loading-fill animate-spin text-2xl w-full"></span>
+              <span className="i-line-md-loading-loop text-2xl w-full"></span>
             ) : (
               <button
                 className={"bg-blue-600 text-white px-4 py-2 rounded-md"}

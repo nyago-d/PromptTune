@@ -21,7 +21,7 @@ export default {
   },
   plugins: [
     iconsPlugin({
-      collections: getIconCollections(["material-symbols","mingcute"]),
+      collections: getIconCollections(["material-symbols","line-md"]),
     }),
   ],
 } satisfies Config;

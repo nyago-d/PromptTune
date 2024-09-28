@@ -1,6 +1,6 @@
 import { Generation } from "@prisma/client";
-import { useSubmit } from "@remix-run/react";
-import { useEffect, useState } from "react";
+import { useLocation, useSubmit } from "@remix-run/react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { GenerationWithPrompts, UserSessionWithGenerations } from "~/services/service";
 
 export function Generations({
@@ -16,13 +16,22 @@ export function Generations({
     const [generations, setGenerations] = useState(userSession!.generations || [] satisfies GenerationWithPrompts[]);
 
     const submit = useSubmit();
+    const location = useLocation();
 
     useEffect(() => {
       if (userSession?.id) {
         setGenerations(userSession.generations);
-        document.body.scrollIntoView({ behavior: 'instant', block: 'end' });
       }
     }, [userSession]);
+
+    useLayoutEffect(() => {
+      if (location.hash) {
+        const el = document.querySelector(location.hash);
+        if (el) {
+          el.scrollIntoView();
+        }
+      }
+    }, [location, generations]);
     
     const handleUp = (genIndex: number, resultIndex: number) => {
         const newGenerations = [...generations];
@@ -57,9 +66,9 @@ export function Generations({
 
     return (
         generations.map((generation, generationIndex) => (
-          <div key={generationIndex} className="bg-white rounded-lg shadow-lg p-8 w-full max-w-7xl my-5">
+          <div id={"generation" + (generationIndex + 1)} key={generationIndex} className="bg-white rounded-lg shadow-lg p-8 w-full max-w-7xl my-5">
 
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">Generation {generationIndex + 1}</h1>
+            <h1 className="text-2xl font-bold text-gray-700 mb-4">Generation {generationIndex + 1}</h1>
             <ul className="space-y-2 mb-6">
               {generation!.promptResults.map((prompt, promptIndex) => (
                 <li
@@ -93,7 +102,7 @@ export function Generations({
 
             <div className="flex justify-between mt-5">
                 {loading ? (
-                  <span className="i-mingcute-loading-fill animate-spin text-2xl w-full"></span>
+                  <span className="i-line-md-loading-loop text-2xl w-full"></span>
                 ) : (
                   <button
                       className="bg-blue-600 text-white px-4 py-2 rounded-md"

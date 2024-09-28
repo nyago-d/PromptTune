@@ -14,6 +14,10 @@ const openAiClient = new OpenAI({
     apiKey: process.env['OPENAI_API_KEY']
 });
 
+export async function readHistories() {
+    return await prismaClient.userSession.findMany({ orderBy: { id: 'desc' }, take: 20 });
+}
+
 export async function readSession(id: number) {
 
     const steps = await prismaClient.userSession.findFirst({ 
