@@ -39,7 +39,6 @@ export function InitialBlock({
 
     return (
         <div className="bg-white rounded-lg shadow-lg p-8 my-5">
-          <h1 className="text-2xl font-bold text-gray-700 mb-4">Prompt Tuning</h1>
           <div className="mb-4">
             <label htmlFor="initialPrompt" className="block text-gray-700 mb-2">Initial Prompt</label>
             <textarea

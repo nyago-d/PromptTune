@@ -123,7 +123,7 @@ export async function getFirstPrompts(systemPrompt: string) {
 ・これらの5つのプロンプトはそれぞれ独立して評価されます`;
     
     const completion = await openAiClient.beta.chat.completions.parse({
-        model: 'gpt-4o-mini-2024-07-18',
+        model: process.env['SYSTEM_MODEL_NAME']!,
         messages: [
             { role: 'system', content: firstSystemPrompt },
             { role: 'system', content: systemPrompt },
@@ -159,7 +159,7 @@ export async function getNextPrompts(systemPrompt: string, generation: Generatio
     ・これらの5つのプロンプトはそれぞれ独立して評価されます`;
         
     const completion = await openAiClient.beta.chat.completions.parse({
-        model: 'gpt-4o-mini-2024-07-18',
+        model: process.env['SYSTEM_MODEL_NAME']!,
         messages: [
             { role: 'system', content: firstSystemPrompt },
             { role: 'system', content: systemPrompt },
@@ -187,7 +187,7 @@ export async function getAnswers(systemPrompts: string[], userPrompt: string) {
     const tasks = [];
     for (const systemPrompt of systemPrompts) {
         const task = openAiClient.chat.completions.create({
-            model: 'gpt-4o-mini-2024-07-18',
+            model: process.env['TUNING_MODEL_NAME']!,
             messages: [
                 { role: 'system', content: systemPrompt },
                 { role: 'system', content: userPrompt },
